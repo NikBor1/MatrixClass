@@ -11,6 +11,7 @@ class Matrix
     int m;
     std::vector <std::vector <T>> data;
 public:
+    Matrix();
     Matrix(std::vector <std::vector <T>> vect);
     Matrix(int n_, int m_);
 
@@ -76,6 +77,18 @@ public:
     }
 
 };
+
+template <typename T>
+
+Matrix<T>::Matrix()
+{
+    std::vector <T> vect (0, 0);
+    data = vect;
+    n = 0;
+    m = 0;
+}
+
+
 
 template <typename T>
 
