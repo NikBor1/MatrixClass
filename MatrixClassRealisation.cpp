@@ -21,15 +21,14 @@ int main()
 
     Matrix <double> m1 (l1, c1);
 
-    std::cout << "uuuuhuuu";
-
     for(int i = 0; i < l1; i ++)
     {
-        for(int j = 0; j << c1; j ++)
+        for(int j = 0; j < c1; j ++)
         {
             double d;
             std::cin >> d;
             m1[i][j] = d;
+
         }
     }
 
@@ -47,11 +46,39 @@ int main()
         }
     }
 
-    Matrix <double> res();
+    int menuChoise;
 
-    res = m1 + m2;
+    std::cout << "If you want to get sum of two matrix, enter 1; if you want to get product of two matrix, enter 2; if you want to get product of matrix and number, enter 3; if you want to get transposed matrix, enter 4; if you want to get matrix in natural degree, enter 5; if you want to get better mood, enter 6: ";
 
-    std::cout << "m1 + m2" << res << std::endl;
+    std::cin >> menuChoise;
+
+    switch(menuChoise)
+    {
+    case 1:
+
+        break;
+
+    case 2:
+        break;
+
+    case 3:
+        break;
+
+    case 4:
+        break;
+
+    case 5:
+
+        break;
+
+    case 6:
+        std::cout << "O   O" << std::endl << "  |  " << std::endl <<  "  /  " << std::endl  << "\\____/"<< std::endl << " You are the best, so you'll reach all you purposes! Have a nice day! :)" << std::endl;
+        break;
+
+
+
+
+    }
 
 
 

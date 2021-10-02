@@ -76,7 +76,7 @@ public:
         return mat;
     }
 
-    Matrix countDeterminator (Matrix mat);
+    Matrix countDeterminator (Matrix mat)
     {
         int res = 0;
 
@@ -88,7 +88,7 @@ public:
                 for(int k = 0; k < mat.sizeC(); k ++)
                 {
                     if(k == i)
-                        continue
+                        continue;
 
                     mom[j - 1].push_back(mat[j][k]);
                 }
@@ -139,6 +139,7 @@ Matrix<T>::Matrix(int n_, int m_)
             vect[i].push_back(0);
     }
 
+    data = vect;
     n = n_;
     m = m_;
 }
