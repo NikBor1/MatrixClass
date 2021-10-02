@@ -76,6 +76,34 @@ public:
         return mat;
     }
 
+    Matrix countDeterminator (Matrix mat);
+    {
+        int res = 0;
+
+        for(int i = 0; i < mat.sizeC(); i ++)
+        {
+            Matrix mom (mat.sizeC() - 1, 0);
+            for(int j = 1; j < mat.sizeC(); j ++)
+            {
+                for(int k = 0; k < mat.sizeC(); k ++)
+                {
+                    if(k == i)
+                        continue
+
+                    mom[j - 1].push_back(mat[j][k]);
+                }
+            }
+
+            if(i % 2 == 0)
+                res += mat[1][i] * countDeterminator(mom);
+            else
+                res += mat[1][i] * countDeterminator(mom);
+        }
+
+        return res;
+    }
+
+
 };
 
 template <typename T>
