@@ -125,6 +125,8 @@ Matrix<T>::Matrix(int n_, int m_)
             vect[i].push_back(0);
     }
 
+    data = vect;
+
     n = n_;
     m = m_;
 }

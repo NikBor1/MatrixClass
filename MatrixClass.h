@@ -11,7 +11,6 @@ class Matrix
     int m;
     std::vector <std::vector <T>> data;
 public:
-    Matrix();
     Matrix(std::vector <std::vector <T>> vect);
     Matrix(int n_, int m_);
 
@@ -76,7 +75,7 @@ public:
         return mat;
     }
 
-    Matrix countDeterminator (Matrix mat);
+    Matrix countDeterminator (Matrix mat)
     {
         int res = 0;
 
@@ -88,7 +87,7 @@ public:
                 for(int k = 0; k < mat.sizeC(); k ++)
                 {
                     if(k == i)
-                        continue
+                        continue;
 
                     mom[j - 1].push_back(mat[j][k]);
                 }
@@ -105,17 +104,6 @@ public:
 
 
 };
-
-template <typename T>
-
-Matrix<T>::Matrix()
-{
-    std::vector <T> vect (0, 0);
-    data = vect;
-    n = 0;
-    m = 0;
-}
-
 
 
 template <typename T>
@@ -138,6 +126,8 @@ Matrix<T>::Matrix(int n_, int m_)
         for(int j = 0; j < m; j ++)
             vect[i].push_back(0);
     }
+
+    data = vect;
 
     n = n_;
     m = m_;
@@ -167,7 +157,7 @@ const Matrix<T> Matrix<T>::operator*(T a) const
     for(int i = 0; i < n; i ++)
     {
         for(int j = 0; j < m; j ++)
-            res[i][j].push_back(data[i][j] * a);
+            res[i].push_back(data[i][j] * a);
     }
 
     return Matrix(res);
