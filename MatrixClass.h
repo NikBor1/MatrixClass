@@ -102,6 +102,56 @@ public:
         return res;
     }
 
+    Matrix <T> countReverseMatrix (Matrix <T> mat)
+    {
+        Matrix <double> result (mat.sizeL(), mat.sizeC());
+
+        for(int i = 0; i < mat.sizeL(); i ++)
+            result[i][i] = 1;
+
+        for(int i = 0; i < mat.sizeL(); i ++)
+        {
+            if(mat[i][i] == 0)
+            {
+                bool detWork = false;
+
+                for(int j = 0; j < mat.sizeL(); j ++)
+                {
+                    if(mat[j][i] != 0)
+                    {
+                        for(int k = i; k < mat.sizeL(); k ++)
+                        {
+                            mat[i][k] += mat[j][k];
+                            result[i][k] += result[j][k];
+                        }
+                        detWork = true;
+                    }
+                }
+                if(!detWork)
+                {
+                    Matrix <T> zero (1, 1);
+                    return zero;
+                }
+            }
+
+            for(int j = i; j < mat.sizeL(); j ++)
+            {
+                double koef = 0;
+                koef = mat[j][i] / mat[i][i];
+
+                for(int k = i; k < mat.sizeL(); k ++)
+                {
+                    mat[i][k] -= mat[j][k] * koef;
+                    result[i][k] -= result[j][k] * koef;
+                }
+            }
+        }
+
+        return result;
+    }
+
+};
+
 
 };
 
