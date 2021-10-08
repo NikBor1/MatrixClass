@@ -29,7 +29,7 @@ public:
 
     Matrix tpn (Matrix mat)
     {
-        Matrix res (mat.sizeC());
+        Matrix res (mat.sizeC(), mat.sizeL());
 
         for(int i = 0; i < mat.sizeC(); i ++)
         {
@@ -66,7 +66,7 @@ public:
                 if(deg >= degTwoMemory[i])
                 {
                     deg -= degTwoMemory[i];
-                    mat *= degMatMemory[i];
+                    mat = mat * degMatMemory[i];
                     break;
                 }
             }
@@ -75,9 +75,9 @@ public:
         return mat;
     }
 
-    Matrix countDeterminator (Matrix mat)
+    T countDeterminator (Matrix mat)
     {
-        int res = 0;
+        T res = 0;
 
         for(int i = 0; i < mat.sizeC(); i ++)
         {
@@ -102,7 +102,7 @@ public:
         return res;
     }
 
-    Matrix <T> countReverseMatrix (Matrix <T> mat)
+    Matrix <T> getReverseMatrix (Matrix <T> mat)
     {
         Matrix <double> result (mat.sizeL(), mat.sizeC());
 
@@ -153,7 +153,7 @@ public:
 };
 
 
-};
+
 
 
 template <typename T>
