@@ -15,13 +15,17 @@ int main()
     std::cout << "\nIf you want to contact the developer, enter 7.";
     std::cout << "\nIf you want to know more about creating of this code, enter 8.";
     std::cout << "\nIf you want to get better mood, enter 9.\n";
-    std::cout << "\nIf you want to get better mood, enter 10:\n";
+    std::cout << "\nIf you want to inverse a matrix, enter 10.\n";
+    std::cout << "\nIf you want to inverse a matrix, enter 11:\n";
 
     std::cin >> optionChooseValue;
 
+    bool errors = true;
 
-    switch (optionChooseValue)
+    while(errors)
     {
+        switch (optionChooseValue)
+        {
         case 1:
             {
             int lines = 0;
@@ -56,6 +60,8 @@ int main()
 
             std::cout << "Your result is: \n" << result;
 
+            errors = false;
+
             break;
             }
         case 2:
@@ -88,6 +94,8 @@ int main()
 
             std::cout << "Your result is: \n" << result;
 
+            errors = false;
+
             break;
             }
         case 3:
@@ -97,11 +105,11 @@ int main()
             std::cin >> lines1;
 
             int cols1 = 0;
-            std::cout << "Enter amount of columns first in matrix, please: \n";
+            std::cout << "Enter amount of columns in first matrix, please: \n";
             std::cin >> cols1;
 
 
-            std::cout << "Enter matrix, please: \n";
+            std::cout << "Enter first matrix, please: \n";
             Matrix < double > matrix1 (lines1, cols1);
 
             for(int i = 0; i < lines1; i ++)
@@ -112,15 +120,15 @@ int main()
 
 
             int lines2 = 0;
-            std::cout << "Enter amount of lines in first matrix, please: \n";
+            std::cout << "Enter amount of lines in second matrix, please: \n";
             std::cin >> lines2;
 
             int cols2 = 0;
-            std::cout << "Enter amount of columns first in matrix, please: \n";
+            std::cout << "Enter amount of columns in second matrix, please: \n";
             std::cin >> cols2;
 
 
-            std::cout << "Enter matrix, please: \n";
+            std::cout << "Enter second matrix, please: \n";
             Matrix < double > matrix2 (lines2, cols2);
 
             for(int i = 0; i < lines2; i ++)
@@ -129,11 +137,17 @@ int main()
                     std::cin >> matrix2[i][j];
             }
 
+            if(lines2 != cols1)
+                break;
+
+
             Matrix < double > result (lines1, cols2);
 
             result = matrix1 * matrix2;
 
             std::cout << "Your result is: \n" << result;
+
+            errors = false;
 
             break;
             }
@@ -160,9 +174,11 @@ int main()
 
             Matrix < double > result (cols, lines);
 
-            result = matrix1.tpn();
+            result = matrix1.tpn(matrix1);
 
             std::cout << "Your result is: \n" << result;
+
+            errors = false;
 
             break;
             }
@@ -172,17 +188,13 @@ int main()
             std::cout << "Enter amount of lines in matrix, please: \n";
             std::cin >> lines;
 
-            int cols = 0;
-            std::cout << "Enter amount of columns in matrix, please: \n";
-            std::cin >> cols;
-
 
             std::cout << "Enter matrix, please: \n";
-            Matrix < double > matrix1 (lines, cols);
+            Matrix < double > matrix1 (lines, lines);
 
             for(int i = 0; i < lines; i ++)
             {
-                for(int j = 0; j < cols; j ++)
+                for(int j = 0; j < lines; j ++)
                     std::cin >> matrix1[i][j];
             }
 
@@ -190,11 +202,13 @@ int main()
             std::cout << "Enter degree, please: \n";
             std::cin >> degree;
 
-            Matrix < double > result (lines, cols);
+            Matrix < double > result (lines, lines);
 
-            result = matrix1.degQM(degree);
+            result = matrix1.degQM(matrix1, degree);
 
             std::cout << "Your result is: \n" << result;
+
+            errors = false;
 
             break;
             }
@@ -204,31 +218,134 @@ int main()
             std::cout << "Enter amount of lines in matrix, please: \n";
             std::cin >> lines;
 
-            int cols = 0;
-            std::cout << "Enter amount of columns in matrix, please: \n";
-            std::cin >> cols;
-
 
             std::cout << "Enter matrix, please: \n";
-            Matrix < double > matrix1 (lines, cols);
+            Matrix < double > matrix1 (lines, lines);
 
             for(int i = 0; i < lines; i ++)
             {
-                for(int j = 0; j < cols; j ++)
+                for(int j = 0; j < lines; j ++)
                     std::cin >> matrix1[i][j];
             }
 
             double result = 0;
 
-            result = matrix1 * factor;
+            result = matrix1.countDeterminator(matrix1);
 
             std::cout << "Your result is: \n" << result;
 
+            errors = false;
+
             break;
             }
+            case 7:
+            {
+                std::cout << "Contact e-mail address is borisevich170@yandex.ru";
+                return 0;
+                break;
+            }
+            case 8:
+            {
+                std::cout << "The project, which is the main theme of this video cause nearly the same level of anger, as this: https://www.youtube.com/watch?v=T-2nR_dvcGY";
+                return 0;
+                break;
+            }
+            case 9:
+            {
+                std::cout << "You are the best, so you will reach all you goals! Have a nice day! :)";
+                return 0;
+                break;
+            }
+            case 10:
+            {
+            int lines = 0;
+            std::cout << "Enter amount of lines in matrix, please: \n";
+            std::cin >> lines;
 
+
+
+            std::cout << "Enter matrix, please: \n";
+            Matrix < double > matrix1 (lines, lines);
+
+            for(int i = 0; i < lines; i ++)
+            {
+                for(int j = 0; j < lines; j ++)
+                    std::cin >> matrix1[i][j];
+            }
+
+            Matrix < double > result (lines, lines);
+
+            result = matrix1.getReverseMatrix(matrix1);
+
+            std::cout << "Your result is: \n" << result;
+
+            errors = false;
+
+            break;
+            }
+            case 11:
+            {
+            int lines = 0;
+            std::cout << "Enter amount of equations, please: \n";
+            std::cin >> lines;
+
+
+            std::cout << "Enter matrix of equation coefficients on left, please: \n";
+            Matrix < double > matrix1 (lines, lines);
+
+            for(int i = 0; i < lines; i ++)
+            {
+                for(int j = 0; j < lines; j ++)
+                    std::cin >> matrix1[i][j];
+            }
+
+            std::cout << "Enter matrix of equation coefficients on right, please: \n";
+            Matrix < double > matrix2 (lines, 1);
+
+            for(int i = 0; i < lines; i ++)
+            {
+                for(int j = 0; j < 1; j ++)
+                    std::cin >> matrix2[i][j];
+            }
+
+            Matrix < double > result (lines, 1);
+
+            result = matrix1.getReverseMatrix(matrix1);
+            result = result * matrix2;
+
+            std::cout << "Your result is: \n" << result;
+
+            errors = false;
+
+            break;
+            }
+            case 42:
+            {
+                std::cout << "Sorry, this value is not available. Please, try again: \n";
+                int a = 0;
+                std::cin >> a;
+
+                if(a != 42)
+                {
+                    break;
+                }
+
+                std::cout << "You have an administrator rights.";
+
+                return 0;
+                break;
+            }
+            default:
+            {
+                break;
+            }
+
+        }
+        if(errors)
+            std::cout << "Sorry, this value is not available. Please, try again: \n";
 
     }
+
 
     std::cout << "\nThank you for using this program! Estimate it from 1 to 5: \n";
     int mark = 0;

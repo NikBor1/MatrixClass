@@ -77,7 +77,7 @@ public:
 
     T countDeterminator (Matrix mat)
     {
-        int res = 0;
+        T res = 0;
 
         for(int i = 0; i < mat.sizeC(); i ++)
         {
@@ -102,7 +102,7 @@ public:
         return res;
     }
 
-    Matrix <T> countReverseMatrix (Matrix <T> mat)
+    Matrix <T> getReverseMatrix (Matrix <T> mat)
     {
         Matrix <double> result (mat.sizeL(), mat.sizeC());
 
