@@ -13,6 +13,7 @@ class Matrix
 public:
     Matrix(std::vector <std::vector <T>> vect);
     Matrix(int n_, int m_);
+    Matrix();
 
     int sizeL() const { return n; };
     int sizeC() const { return m; };
@@ -27,25 +28,25 @@ public:
     template<typename Type> friend std::istream& operator>>(std::istream&, Matrix<Type>&);
     template<typename Type> friend std::ostream& operator<<(std::ostream&, const Matrix<Type>&);
 
-    Matrix tpn (Matrix mat)
+    Matrix tpn ()
     {
-        Matrix res (mat.sizeC(), mat.sizeL());
+        Matrix res (n, m);
 
-        for(int i = 0; i < mat.sizeC(); i ++)
+        for(int i = 0; i < m; i ++)
         {
-            for(int j = 0; j < mat.sizeL(); j ++)
-                res[i].push_back(mat[j][i]);
+            for(int j = 0; j < n; j ++)
+                res[i].push_back(data[j][i]);
         }
 
         return res;
     }
 
-    Matrix degQM (Matrix mat, int deg)
+    Matrix degQM (int deg)
     {
-        std::vector <Matrix> degMatMemory (0);
-        std::vector <int> degTwoMemory (0);
+        std::vector <Matrix> degMatMemory;
+        std::vector <int> degTwoMemory;
 
-        degMatMemory.push_back(mat);
+        degMatMemory.push_back(*this);
         degTwoMemory.push_back(2);
 
         int tDeg = 1;
@@ -66,62 +67,62 @@ public:
                 if(deg >= degTwoMemory[i])
                 {
                     deg -= degTwoMemory[i];
-                    mat = mat * degMatMemory[i];
+                    *this = *this * degMatMemory[i];
                     break;
                 }
             }
         }
 
-        return mat;
+        return *this;
     }
 
-    T countDeterminator (Matrix mat)
+    T countDeterminator ()
     {
         T res = 0;
 
-        for(int i = 0; i < mat.sizeC(); i ++)
+        for(int i = 0; i < m; i ++)
         {
-            Matrix mom (mat.sizeC() - 1, 0);
-            for(int j = 1; j < mat.sizeC(); j ++)
+            Matrix mom (m - 1, 0);
+            for(int j = 1; j < m; j ++)
             {
-                for(int k = 0; k < mat.sizeC(); k ++)
+                for(int k = 0; k < m; k ++)
                 {
                     if(k == i)
                         continue;
 
-                    mom[j - 1].push_back(mat[j][k]);
+                    mom[j - 1].push_back(data[j][k]);
                 }
             }
 
             if(i % 2 == 0)
-                res += mat[1][i] * countDeterminator(mom);
+                res += data[1][i] * mom.countDeterminator();
             else
-                res += mat[1][i] * countDeterminator(mom);
+                res += data[1][i] * mom.countDeterminator();
         }
 
         return res;
     }
 
-    Matrix <T> getReverseMatrix (Matrix <T> mat)
+    Matrix <T> getReverseMatrix ()
     {
-        Matrix <double> result (mat.sizeL(), mat.sizeC());
+        Matrix <double> result (n, m);
 
-        for(int i = 0; i < mat.sizeL(); i ++)
+        for(int i = 0; i < n; i ++)
             result[i][i] = 1;
 
-        for(int i = 0; i < mat.sizeL(); i ++)
+        for(int i = 0; i < n; i ++)
         {
-            if(mat[i][i] == 0)
+            if(data[i][i] == 0)
             {
                 bool detWork = false;
 
-                for(int j = 0; j < mat.sizeL(); j ++)
+                for(int j = 0; j < n; j ++)
                 {
-                    if(mat[j][i] != 0)
+                    if(data[j][i] != 0)
                     {
-                        for(int k = i; k < mat.sizeL(); k ++)
+                        for(int k = i; k < n; k ++)
                         {
-                            mat[i][k] += mat[j][k];
+                            data[i][k] += data[j][k];
                             result[i][k] += result[j][k];
                         }
                         detWork = true;
@@ -134,14 +135,14 @@ public:
                 }
             }
 
-            for(int j = i; j < mat.sizeL(); j ++)
+            for(int j = i; j < n; j ++)
             {
                 double koef = 0;
-                koef = mat[j][i] / mat[i][i];
+                koef = data[j][i] / data[i][i];
 
-                for(int k = i; k < mat.sizeL(); k ++)
+                for(int k = i; k < n; k ++)
                 {
-                    mat[i][k] -= mat[j][k] * koef;
+                    data[i][k] -= data[j][k] * koef;
                     result[i][k] -= result[j][k] * koef;
                 }
             }
@@ -152,6 +153,15 @@ public:
 
 };
 
+template <typename T>
+
+Matrix<T>::Matrix()
+{
+    std::vector <std::vector <T>> vect;
+    data = vect;
+    n = 0;
+    m = 0;
+}
 
 
 
@@ -233,6 +243,21 @@ const Matrix<T> Matrix<T>::operator*(const Matrix& a) const
     }
 
     return Matrix(res);
+}
+
+template<typename Type>
+std::ostream& operator<<(std::ostream&, const Matrix<Type>& a)
+{
+    for(int i = 0; i < a.sizeL(); i ++)
+    {
+        for(int j = 0; j < a.sizeC(); j ++)
+            std::cout << a.data[i][j] << " ";
+
+        std::cout << std::endl;
+    }
+
+
+
 }
 
 #endif
