@@ -16,7 +16,7 @@ int main()
     std::cout << "\nIf you want to know more about creating of this code, enter 8.";
     std::cout << "\nIf you want to get better mood, enter 9.\n";
     std::cout << "\nIf you want to inverse a matrix, enter 10.\n";
-    std::cout << "\nIf you want to inverse a matrix, enter 11:\n";
+    //std::cout << "\nIf you want to inverse a matrix, enter 11:\n";
 
     std::cin >> optionChooseValue;
 
@@ -174,7 +174,7 @@ int main()
 
             Matrix < double > result (cols, lines);
 
-            result = matrix1.tpn(matrix1);
+            result = matrix1.tpn();
 
             std::cout << "Your result is: \n" << result;
 
@@ -204,7 +204,7 @@ int main()
 
             Matrix < double > result (lines, lines);
 
-            result = matrix1.degQM(matrix1, degree);
+            result = matrix1.degQM(degree);
 
             std::cout << "Your result is: \n" << result;
 
@@ -230,7 +230,7 @@ int main()
 
             double result = 0;
 
-            result = matrix1.countDeterminator(matrix1);
+            result = matrix1.countDeterminator();
 
             std::cout << "Your result is: \n" << result;
 
@@ -275,7 +275,7 @@ int main()
 
             Matrix < double > result (lines, lines);
 
-            result = matrix1.getReverseMatrix(matrix1);
+            result = matrix1.getReverseMatrix();
 
             std::cout << "Your result is: \n" << result;
 
@@ -310,7 +310,7 @@ int main()
 
             Matrix < double > result (lines, 1);
 
-            result = matrix1.getReverseMatrix(matrix1);
+            result = matrix1.getReverseMatrix();
             result = result * matrix2;
 
             std::cout << "Your result is: \n" << result;
