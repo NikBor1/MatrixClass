@@ -17,6 +17,7 @@ public:
 
     int sizeL() const { return n; };
     int sizeC() const { return m; };
+    void set_elem(int a, int b, T c) {data[a][b] = c;};
 
     const Matrix operator+(const Matrix&) const;
     const Matrix operator*(T) const;
@@ -28,18 +29,7 @@ public:
     template<typename Type> friend std::istream& operator>>(std::istream&, Matrix<Type>&);
     template<typename Type> friend std::ostream& operator<<(std::ostream&, const Matrix<Type>&);
 
-    Matrix tpn ()
-    {
-        Matrix res (n, m);
-
-        for(int i = 0; i < m; i ++)
-        {
-            for(int j = 0; j < n; j ++)
-                res[i].push_back(data[j][i]);
-        }
-
-        return res;
-    }
+    Matrix tpn ();
 
     Matrix degQM (int deg)
     {
@@ -179,18 +169,12 @@ template <typename T>
 
 Matrix<T>::Matrix(int n_, int m_)
 {
-    std::vector < std::vector <T> > vect(n);
-
-    for(int i = 0; i < n; i ++)
-    {
-        for(int j = 0; j < m; j ++)
-            vect[i].push_back(0);
-    }
-
-    data = vect;
-
     n = n_;
     m = m_;
+    std::vector < std::vector <T> > vect(n, std::vector<T> (m, 0));
+    data = vect;
+
+
 }
 
 template <typename T>
@@ -246,7 +230,7 @@ const Matrix<T> Matrix<T>::operator*(const Matrix& a) const
 }
 
 template<typename Type>
-std::ostream& operator<<(std::ostream&, const Matrix<Type>& a)
+std::ostream& operator<<(std::ostream& s_tream, const Matrix<Type>& a)
 {
     for(int i = 0; i < a.sizeL(); i ++)
     {
@@ -256,8 +240,24 @@ std::ostream& operator<<(std::ostream&, const Matrix<Type>& a)
         std::cout << std::endl;
     }
 
-
-
+    return s_tream;
 }
+
+
+template<typename Type>
+Matrix<Type> Matrix<Type>::tpn ()
+    {
+
+        Matrix res(m, n);
+
+
+
+        for(int i = 0; i < m; i ++)
+        {
+            for(int j = 0; j < n; j ++)
+                res.set_elem(i, j, data[j][i]);
+        }
+        return res;
+    }
 
 #endif

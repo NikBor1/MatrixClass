@@ -128,6 +128,12 @@ int main()
             std::cin >> cols2;
 
 
+            if(lines2 != cols1)
+            {
+                std::cout << "Incorrect input sizes";
+                return 0;
+            }
+
             std::cout << "Enter second matrix, please: \n";
             Matrix < double > matrix2 (lines2, cols2);
 
@@ -174,7 +180,9 @@ int main()
 
             Matrix < double > result (cols, lines);
 
+
             result = matrix1.tpn();
+
 
             std::cout << "Your result is: \n" << result;
 
