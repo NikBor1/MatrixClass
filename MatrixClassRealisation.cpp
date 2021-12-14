@@ -274,59 +274,31 @@ int main()
 
             std::cout << "Enter matrix, please: \n";
             Matrix < double > matrix1 (lines, lines);
+            std::vector < double > consts (lines);
 
             for(int i = 0; i < lines; i ++)
             {
                 for(int j = 0; j < lines; j ++)
                     std::cin >> matrix1[i][j];
+                std::cin >> consts[i];
             }
 
             Matrix < double > result (lines, lines);
 
             result = matrix1.getReverseMatrix();
 
-            std::cout << "Your result is: \n" << result;
+            std::cout << "Your result is: \n";
+
+            for(int i = 0; i < lines; i ++)
+            {
+                std::cout << "x_" << i + 1 << " = " << result[i][i] * consts[i] << std::endl;
+            }
 
             errors = false;
 
             break;
             }
-            case 11:
-            {
-            int lines = 0;
-            std::cout << "Enter amount of equations, please: \n";
-            std::cin >> lines;
 
-
-            std::cout << "Enter matrix of equation coefficients on left, please: \n";
-            Matrix < double > matrix1 (lines, lines);
-
-            for(int i = 0; i < lines; i ++)
-            {
-                for(int j = 0; j < lines; j ++)
-                    std::cin >> matrix1[i][j];
-            }
-
-            std::cout << "Enter matrix of equation coefficients on right, please: \n";
-            Matrix < double > matrix2 (lines, 1);
-
-            for(int i = 0; i < lines; i ++)
-            {
-                for(int j = 0; j < 1; j ++)
-                    std::cin >> matrix2[i][j];
-            }
-
-            Matrix < double > result (lines, 1);
-
-            result = matrix1.getReverseMatrix();
-            result = result * matrix2;
-
-            std::cout << "Your result is: \n" << result;
-
-            errors = false;
-
-            break;
-            }
             case 42:
             {
                 std::cout << "Sorry, this value is not available. Please, try again: \n";
