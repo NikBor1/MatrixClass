@@ -14,7 +14,7 @@ int main()
     std::cout << "\nIf you want to count a matrix determinant, enter 6.";
     std::cout << "\nIf you want to contact the developer, enter 7.";
     std::cout << "\nIf you want to know more about creating of this code, enter 8.";
-    std::cout << "\nIf you want to get better mood, enter 9.\n";
+    std::cout << "\nIf you want to get better mood, enter 9";
     std::cout << "\nIf you want to inverse a matrix, enter 10.\n";
     //std::cout << "\nIf you want to inverse a matrix, enter 11:\n";
 
