@@ -36,23 +36,27 @@ public:
         std::vector <Matrix> degMatMemory;
         std::vector <int> degTwoMemory;
 
-        degMatMemory.push_back(*this);
-        degTwoMemory.push_back(2);
+        deg--;
 
-        int tDeg = 1;
+        degMatMemory.push_back(*this);
+        degTwoMemory.push_back(1);
+
+        int tDeg = 2;
 
         for(int i = 0; i > -1; i ++)
         {
             degMatMemory.push_back(degMatMemory[i] * degMatMemory[i]);
-            degTwoMemory.push_back(deg);
+            degTwoMemory.push_back(tDeg);
             tDeg *= 2;
-            if(tDeg >= n)
+            if(tDeg >= deg)
                 break;
         }
 
+    std::cout << "ok";
+
         while(deg > 0)
         {
-            for(int i = degMatMemory.size(); i >= 0; i --)
+            for(int i = degMatMemory.size() - 1; i >= 0; i --)
             {
                 if(deg >= degTwoMemory[i])
                 {
@@ -70,35 +74,39 @@ public:
     {
         T res = 0;
 
+        if(m == 1)
+            return data[0][0];
+
         for(int i = 0; i < m; i ++)
         {
-            Matrix mom (m - 1, 0);
+            Matrix mom (m - 1, m - 1);
             for(int j = 1; j < m; j ++)
             {
-                for(int k = 0; k < m; k ++)
-                {
-                    if(k == i)
-                        continue;
+                for(int k = 0; k < i; k ++)
+                    mom.set_elem(j - 1, k, data[j][k]);
 
-                    mom[j - 1].push_back(data[j][k]);
-                }
+                for(int k = i + 1; k < m; k ++)
+                    mom.set_elem(j - 1, k - 1, data[j][k]);
             }
 
             if(i % 2 == 0)
-                res += data[1][i] * mom.countDeterminator();
+                res += data[0][i] * mom.countDeterminator();
             else
-                res += data[1][i] * mom.countDeterminator();
+                res -= data[0][i] * mom.countDeterminator();
         }
 
         return res;
     }
 
-    Matrix <T> getReverseMatrix ()
+    Matrix <T> getReverseMatrix()
     {
-        Matrix <double> result (n, m);
+        Matrix <double> result (n, n);
 
         for(int i = 0; i < n; i ++)
-            result[i][i] = 1;
+            result.set_elem(i, i, 1);
+
+
+
 
         for(int i = 0; i < n; i ++)
         {
@@ -108,34 +116,62 @@ public:
 
                 for(int j = 0; j < n; j ++)
                 {
-                    if(data[j][i] != 0)
+                    if(data[i][j] != 0)
                     {
                         for(int k = i; k < n; k ++)
                         {
-                            data[i][k] += data[j][k];
-                            result[i][k] += result[j][k];
+                            data[k][i] += data[k][j];
+                            result.set_elem(k, i, result[k][i] + result[k][j]);
                         }
                         detWork = true;
                     }
                 }
                 if(!detWork)
                 {
-                    Matrix <T> zero (1, 1);
+                    Matrix <T> zero (n, n);
                     return zero;
                 }
             }
 
-            for(int j = i; j < n; j ++)
+            for(int j = i + 1; j < n; j ++)
             {
-                double koef = 0;
-                koef = data[j][i] / data[i][i];
-
-                for(int k = i; k < n; k ++)
+                for(int k = i + 1; k < n; k ++)
                 {
-                    data[i][k] -= data[j][k] * koef;
-                    result[i][k] -= result[j][k] * koef;
+                    data[j][k] -= data[i][k] * data[j][i] / data[i][i];
+                    result.set_elem(j, k, result[j][k] - result[i][k] * data[j][i] / data[i][i]);
                 }
+                result.set_elem(j, i, result[j][i] - result[i][i] * data[j][i] / data[i][i]);
+                data[j][i] = 0;
+                std::cout << "a\n"<<*this << "gar\n" << result;
             }
+        }
+
+        for(int i = n - 1; i >= 0; i --)
+        {
+            for(int j = i - 1; j >= 0; j --)
+            {
+                for(int k = i - 1; k < n; k ++)
+                {
+                    data[j][k] -= data[i][k] * data[j][i] / data[i][i];
+                    result.set_elem(j, k, result[j][k] - result[i][k] * data[j][i] / data[i][i]);
+                    std::cout << "b\n" <<*this << "gar\n"<< result;
+
+                }
+                result.set_elem(j, i, result[j][i] - result[i][i] * data[j][i] / data[i][i]);
+                data[j][i] = 0;
+
+
+            }
+        }
+
+
+
+        for(int i = 0; i < n; i ++)
+        {
+            for(int j = 0; j < n; j ++)
+                result.set_elem(i, j, result[i][j]/data[i][i]);
+            std::cout << "c\n" << *this << "gar\n"<< result;
+
         }
 
         return result;
