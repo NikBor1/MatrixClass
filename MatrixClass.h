@@ -135,14 +135,15 @@ public:
 
             for(int j = i + 1; j < n; j ++)
             {
+                double koef = data[j][i] / data[i][i];
                 for(int k = i + 1; k < n; k ++)
                 {
-                    data[j][k] -= data[i][k] * data[j][i] / data[i][i];
-                    result.set_elem(j, k, result[j][k] - result[i][k] * data[j][i] / data[i][i]);
+                    data[j][k] -= data[i][k] * koef;
+                    result.set_elem(j, k, result[j][k] - result[i][k] * koef);
                 }
-                result.set_elem(j, i, result[j][i] - result[i][i] * data[j][i] / data[i][i]);
+                result.set_elem(j, i, result[j][i] - result[i][i] * koef);
                 data[j][i] = 0;
-                std::cout << "a\n"<<*this << "gar\n" << result;
+                //std::cout << "a\n"<<*this << "gar\n" << result;
             }
         }
 
@@ -150,15 +151,16 @@ public:
         {
             for(int j = i - 1; j >= 0; j --)
             {
+                double koef = data[j][i] / data[i][i];
                 for(int k = i - 1; k < n; k ++)
                 {
-                    data[j][k] -= data[i][k] * data[j][i] / data[i][i];
-                    result.set_elem(j, k, result[j][k] - result[i][k] * data[j][i] / data[i][i]);
-                    std::cout << "b\n" <<*this << "gar\n"<< result;
+
+                    data[j][k] -= data[i][k] * koef;
+                    result.set_elem(j, k, result[j][k] - result[i][k] * koef);
+
+                    //std::cout << "b\n" <<*this << "gar\n"<< result;
 
                 }
-                result.set_elem(j, i, result[j][i] - result[i][i] * data[j][i] / data[i][i]);
-                data[j][i] = 0;
 
 
             }
@@ -168,13 +170,15 @@ public:
 
         for(int i = 0; i < n; i ++)
         {
-            for(int j = 0; j < n; j ++)
-                result.set_elem(i, j, result[i][j]/data[i][i]);
-            std::cout << "c\n" << *this << "gar\n"<< result;
+            data[i][i] = 1 / data[i][i];
+            //for(int j = 0; j < n; j ++)
+
+                //result.set_elem(i, j, result[i][j]/data[i][i]); - inverse
+            //std::cout << "c\n" << *this << "gar\n"<< result;
 
         }
 
-        return result;
+        return *this;
     }
 
 };
