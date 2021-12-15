@@ -15,7 +15,7 @@ int main()
     std::cout << "\nIf you want to contact the developer, enter 7.";
     std::cout << "\nIf you want to know more about creating of this code, enter 8.";
     std::cout << "\nIf you want to get better mood, enter 9";
-    std::cout << "\nIf you want to inverse a matrix, enter 10.\n";
+    std::cout << "\nIf you want to work with a equation system, enter 10.\n";
     //std::cout << "\nIf you want to inverse a matrix, enter 11:\n";
 
     std::cin >> optionChooseValue;
@@ -267,31 +267,81 @@ int main()
             case 10:
             {
             int lines = 0;
-            std::cout << "Enter amount of lines in matrix, please: \n";
+            int columns = 0;
+            std::cout << "Enter amount of equations, please: \n";
             std::cin >> lines;
 
+            std::cout << "Enter amount of unknowns, please: \n";
+            std::cin >> columns;
 
 
             std::cout << "Enter matrix, please: \n";
-            Matrix < double > matrix1 (lines, lines);
-            std::vector < double > consts (lines);
+            Matrix < double > matrix1 (lines, columns + 1);
+
 
             for(int i = 0; i < lines; i ++)
             {
-                for(int j = 0; j < lines; j ++)
+                for(int j = 0; j < columns + 1; j ++)
                     std::cin >> matrix1[i][j];
-                std::cin >> consts[i];
             }
 
-            Matrix < double > result (lines, lines);
+            Matrix < double > result (lines, columns + 1);
 
-            result = matrix1.getReverseMatrix();
+            result = matrix1.gauss();
 
-            std::cout << "Your result is: \n";
-
-            for(int i = 0; i < lines; i ++)
+            if(columns <= lines)
             {
-                std::cout << "x_" << i + 1 << " = " << result[i][i] * consts[i] << std::endl;
+                for(int i = columns; i < lines; i ++)
+                {
+                    if(result[i][columns] != 0)
+                    {
+                        std::cout << "System has no roots" << std::endl;
+                        return 0;
+                    }
+                }
+                for(int i = 0; i < columns; i ++)
+                {
+                    if(result[i][i] == 0 && result[i][columns] != 0)
+                    {
+                        std::cout << "System has no roots" << std::endl;
+                        return 0;
+                    }
+                }
+                for(int i = 0; i < columns; i ++)
+                {
+                    std::cout << "x_" << i + 1 << " = " << result[i][columns] / result[i][i] << std::endl;
+
+                }
+            }
+
+            if(columns > lines)
+            {
+                for(int i = 0; i < lines; i ++)
+                {
+                    if(result[i][i] == 0 && result[i][columns] != 0)
+                    {
+                        std::cout << "System has no roots" << std::endl;
+                        return 0;
+                    }
+                }
+                for(int i = 0; i < lines; i ++)
+                {
+
+                    std::cout << "x_" << i + 1 << " = " << result[i][columns] / result[i][i];
+
+                    for(int j = lines; j < columns; j ++)
+                    {
+                        if(result[i][j] != 0)
+                        {
+                            if(result[i][j] / result[i][i] < 0)
+                                std::cout << " + " << - result[i][j] / result[i][i] << " * x_" << j + 1;
+                            else
+                                std::cout << " - " << result[i][j] / result[i][i] << " * x_" << j + 1;
+                        }
+
+                    }
+                    std::cout << std::endl;
+                }
             }
 
             errors = false;
