@@ -98,41 +98,26 @@ public:
         return res;
     }
 
-    Matrix <T> getReverseMatrix()
+    Matrix <T> gauss()
     {
-        Matrix <double> result (n, n);
-
-        for(int i = 0; i < n; i ++)
-            result.set_elem(i, i, 1);
-
-
 
 
         for(int i = 0; i < n; i ++)
         {
             if(data[i][i] == 0)
             {
-                bool detWork = false;
-
                 for(int j = 0; j < n; j ++)
                 {
                     if(data[i][j] != 0)
                     {
-                        for(int k = i; k < n; k ++)
-                        {
-                            data[k][i] += data[k][j];
-                            result.set_elem(k, i, result[k][i] + result[k][j]);
-                        }
-                        detWork = true;
+                        for(int k = 0; k < n; k ++)
+                            std::swap(data[k][i], data[k][j]);
+
+                        break;
                     }
                 }
-                if(!detWork)
-                {
-                    Matrix <T> zero (n, n);
-                    return zero;
-                }
             }
-
+//before this done
             for(int j = i + 1; j < n; j ++)
             {
                 double koef = data[j][i] / data[i][i];
