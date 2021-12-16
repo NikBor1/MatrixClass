@@ -278,7 +278,6 @@ int main()
             std::cout << "Enter matrix, please: \n";
             Matrix < double > matrix1 (lines, columns + 1);
 
-
             for(int i = 0; i < lines; i ++)
             {
                 for(int j = 0; j < columns + 1; j ++)
@@ -287,61 +286,78 @@ int main()
 
             Matrix < double > result (lines, columns + 1);
 
+
             result = matrix1.gauss();
 
-            if(columns <= lines)
-            {
-                for(int i = columns; i < lines; i ++)
-                {
-                    if(result[i][columns] != 0)
-                    {
-                        std::cout << "System has no roots" << std::endl;
-                        return 0;
-                    }
-                }
-                for(int i = 0; i < columns; i ++)
-                {
-                    if(result[i][i] == 0 && result[i][columns] != 0)
-                    {
-                        std::cout << "System has no roots" << std::endl;
-                        return 0;
-                    }
-                }
-                for(int i = 0; i < columns; i ++)
-                {
-                    std::cout << "x_" << i + 1 << " = " << result[i][columns] / result[i][i] << std::endl;
+            std::cout << result;
 
+            int nowAt = 0;
+
+            bool afterPos = false;
+
+            for(int i = 0; i < lines; i ++)
+            {
+                if(!afterPos)
+                {
+                    while(result[i][nowAt] == 0)
+                        nowAt ++;
+                    if(nowAt == columns)
+                        afterPos = true;
                 }
+                else
+                {
+                    if(result[i][nowAt] != 0)
+                    {
+                        std::cout << "System has no solutions\n";
+                        return 0;
+                    }
+                }
+
+
             }
 
-            if(columns > lines)
+            nowAt = 0;
+
+            for(int i = 0; i < lines; i ++)
             {
-                for(int i = 0; i < lines; i ++)
+                while(result[i][nowAt] == 0)
                 {
-                    if(result[i][i] == 0 && result[i][columns] != 0)
+                    std::cout << "x_" << nowAt + 1 << " can be any real;" << std::endl;
+                    nowAt ++;
+                }
+
+                std::cout << "x_" << nowAt + 1 << " =";
+
+                bool whetherOne = false;
+                for(int j = nowAt + 1; j < columns; j ++)
+                {
+                    if(result[i][j] > 0)
                     {
-                        std::cout << "System has no roots" << std::endl;
-                        return 0;
+                        std::cout << " + " << result[i][j] << " * x_" << j + 1;
+                        whetherOne = true;
+                    }
+                    if(result[i][j] < 0)
+                    {
+                        std::cout << " - " << -result[i][j] << " * x_" << j + 1;
+                        whetherOne = true;
                     }
                 }
-                for(int i = 0; i < lines; i ++)
+
+                if(result[i][columns] > 0)
                 {
-
-                    std::cout << "x_" << i + 1 << " = " << result[i][columns] / result[i][i];
-
-                    for(int j = lines; j < columns; j ++)
-                    {
-                        if(result[i][j] != 0)
-                        {
-                            if(result[i][j] / result[i][i] < 0)
-                                std::cout << " + " << - result[i][j] / result[i][i] << " * x_" << j + 1;
-                            else
-                                std::cout << " - " << result[i][j] / result[i][i] << " * x_" << j + 1;
-                        }
-
-                    }
-                    std::cout << std::endl;
+                    std::cout << " + " << result[i][columns];
+                    whetherOne = true;
                 }
+                if(result[i][columns] < 0)
+                {
+                    std::cout << " - " << -result[i][columns];
+                    whetherOne = true;
+                }
+                if(result[i][columns] == 0 && !whetherOne)
+                    std::cout << " 0";
+
+                std::cout << ";\n";
+
             }
 
             errors = false;
