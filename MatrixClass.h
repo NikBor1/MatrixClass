@@ -18,6 +18,7 @@ public:
     int sizeL() const { return n; };
     int sizeC() const { return m; };
     void set_elem(int a, int b, T c) {data[a][b] = c;};
+    void plusLine(int idFrom, int idTo, T koeff){for(int i = 0; i < m; i ++){data[idTo][i] += data[idFrom] * koeff;}};
 
     const Matrix operator+(const Matrix&) const;
     const Matrix operator*(T) const;
@@ -98,73 +99,7 @@ public:
         return res;
     }
 
-    Matrix <T> gauss()
-    {
-
-
-        for(int i = 0; i < n; i ++)
-        {
-            if(data[i][i] == 0)
-            {
-                for(int j = 0; j < n; j ++)
-                {
-                    if(data[i][j] != 0)
-                    {
-                        for(int k = 0; k < n; k ++)
-                            std::swap(data[k][i], data[k][j]);
-
-                        break;
-                    }
-                }
-            }
-//before this done
-            for(int j = i + 1; j < n; j ++)
-            {
-                double koef = data[j][i] / data[i][i];
-                for(int k = i + 1; k < n; k ++)
-                {
-                    data[j][k] -= data[i][k] * koef;
-                    result.set_elem(j, k, result[j][k] - result[i][k] * koef);
-                }
-                result.set_elem(j, i, result[j][i] - result[i][i] * koef);
-                data[j][i] = 0;
-                //std::cout << "a\n"<<*this << "gar\n" << result;
-            }
-        }
-
-        for(int i = n - 1; i >= 0; i --)
-        {
-            for(int j = i - 1; j >= 0; j --)
-            {
-                double koef = data[j][i] / data[i][i];
-                for(int k = i - 1; k < n; k ++)
-                {
-
-                    data[j][k] -= data[i][k] * koef;
-                    result.set_elem(j, k, result[j][k] - result[i][k] * koef);
-
-                    //std::cout << "b\n" <<*this << "gar\n"<< result;
-
-                }
-
-
-            }
-        }
-
-
-
-        for(int i = 0; i < n; i ++)
-        {
-            data[i][i] = 1 / data[i][i];
-            //for(int j = 0; j < n; j ++)
-
-                //result.set_elem(i, j, result[i][j]/data[i][i]); - inverse
-            //std::cout << "c\n" << *this << "gar\n"<< result;
-
-        }
-
-        return *this;
-    }
+    Matrix <T> gauss();
 
 };
 
@@ -284,5 +219,54 @@ Matrix<Type> Matrix<Type>::tpn ()
         }
         return res;
     }
+
+template<typename Type>
+Matrix <Type> Matrix<Type>::gauss()
+{
+    int nowAt = 0;
+
+    for(int i = 0; i < this->.sizeL(); i ++)
+    {
+        if(nowAt == this->sizeC() - 1)
+            break;
+        while(this->[i][nowAt] == 0)
+        {
+            for(int j = i + 1; j < this->sizeL(); j ++)
+            {
+                if(this->[j][nowAt] != 0)
+                {
+                    this->plusLine(i, j, 1);
+                    break;
+                }
+            }
+            if(this->[i][nowAt] == 0)
+                nowAt ++;
+        }
+
+        for(int j = i + 1; j < this->sizeL(); j ++)
+            this->plusLine(j, i, - this->[j][nowAt] / this->[i][nowAt]);
+    }
+
+    nowAt = this->sizeC() - 1;
+
+    for(int i = this->.sizeL() - 1; i >= 0; i --)
+    {
+        while(this->[i][nowAt] != 0)
+            nowAt --;
+
+        if(nowAt == this->sizeC() - 1)
+            continue;
+
+        nowAt ++;
+
+        for(int j = i - 1; j >= 0; j --)
+            this->plusLine(j, i, - this->[j][nowAt] / this->[i][nowAt]);
+
+        nowAt --;
+    }
+
+    return *this;
+
+}
 
 #endif
