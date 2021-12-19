@@ -18,7 +18,7 @@ public:
     int sizeL() const { return n; };
     int sizeC() const { return m; };
     void set_elem(int a, int b, T c) {data[a][b] = c;};
-    void plusLine(int idFrom, int idTo, T koeff){for(int i = 0; i < m; i ++){data[idTo][i] += data[idFrom] * koeff;}};
+    void plusLine(int idFrom, int idTo, T koeff){for(int i = 0; i < m; i ++){data[idTo][i] += data[idFrom][i] * koeff;}};
 
     const Matrix operator+(const Matrix&) const;
     const Matrix operator*(T) const;
@@ -225,44 +225,56 @@ Matrix <Type> Matrix<Type>::gauss()
 {
     int nowAt = 0;
 
-    for(int i = 0; i < this->.sizeL(); i ++)
+    for(int i = 0; i < this->sizeL(); i ++)
     {
-        if(nowAt == this->sizeC() - 1)
-            break;
-        while(this->[i][nowAt] == 0)
+
+        while((*this)[i][nowAt] == 0)
         {
             for(int j = i + 1; j < this->sizeL(); j ++)
             {
-                if(this->[j][nowAt] != 0)
+                if((*this)[j][nowAt] != 0)
                 {
-                    this->plusLine(i, j, 1);
+                    this->plusLine(j, i, 1);
                     break;
                 }
             }
-            if(this->[i][nowAt] == 0)
+            if((*this)[i][nowAt] == 0)
                 nowAt ++;
         }
 
+        if(nowAt == this->sizeC() - 1)
+            break;
+
+        //std::cout << *this;
+
+        //std::cout << i <<nowAt;
+
         for(int j = i + 1; j < this->sizeL(); j ++)
-            this->plusLine(j, i, - this->[j][nowAt] / this->[i][nowAt]);
+            this->plusLine(i, j, - (*this)[j][nowAt] / (*this)[i][nowAt]);
+
+
     }
 
-    nowAt = this->sizeC() - 1;
 
-    for(int i = this->.sizeL() - 1; i >= 0; i --)
+
+    for(int i = this->sizeL() - 1; i >= 0; i --)
     {
-        while(this->[i][nowAt] != 0)
-            nowAt --;
+        nowAt = 0;
 
-        if(nowAt == this->sizeC() - 1)
-            continue;
+        while((*this)[i][nowAt] == 0)
+        {
+            nowAt ++;
 
-        nowAt ++;
+            if(nowAt == this->sizeC() - 1)
+                break;
+        }
 
-        for(int j = i - 1; j >= 0; j --)
-            this->plusLine(j, i, - this->[j][nowAt] / this->[i][nowAt]);
+        if((*this)[i][nowAt] != 0)
+        {
+            for(int j = i - 1; j >= 0; j --)
+                this->plusLine(i, j, - (*this)[j][nowAt] / (*this)[i][nowAt]);
+        }
 
-        nowAt --;
     }
 
     return *this;
