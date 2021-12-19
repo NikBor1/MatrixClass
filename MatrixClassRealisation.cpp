@@ -273,18 +273,19 @@ int main()
 
             std::cout << "Enter amount of unknowns, please: \n";
             std::cin >> columns;
+            columns ++;
 
 
             std::cout << "Enter matrix, please: \n";
-            Matrix < double > matrix1 (lines, columns + 1);
+            Matrix < double > matrix1 (lines, columns);
 
             for(int i = 0; i < lines; i ++)
             {
-                for(int j = 0; j < columns + 1; j ++)
+                for(int j = 0; j < columns; j ++)
                     std::cin >> matrix1[i][j];
             }
 
-            Matrix < double > result (lines, columns + 1);
+            Matrix < double > result (lines, columns);
 
 
             result = matrix1.gauss();
@@ -297,68 +298,86 @@ int main()
 
             for(int i = 0; i < lines; i ++)
             {
+
                 if(!afterPos)
                 {
                     while(result[i][nowAt] == 0)
                         nowAt ++;
-                    if(nowAt == columns)
+                    if(nowAt == columns - 1)
                         afterPos = true;
                 }
-                else
+
+                if(afterPos)
                 {
                     if(result[i][nowAt] != 0)
                     {
-                        std::cout << "System has no solutions\n";
+                        std::cout << "\nSystem has no solutions\n";
                         return 0;
                     }
                 }
-
-
             }
 
-            nowAt = 0;
+            std::vector <bool> adecvate(columns, false);
+            adecvate[columns - 1] = 0;
 
             for(int i = 0; i < lines; i ++)
             {
-                while(result[i][nowAt] == 0)
-                {
-                    std::cout << "x_" << nowAt + 1 << " can be any real;" << std::endl;
-                    nowAt ++;
-                }
+                int mainID = -1;
+                bool was = true;
 
-                std::cout << "x_" << nowAt + 1 << " =";
-
-                bool whetherOne = false;
-                for(int j = nowAt + 1; j < columns; j ++)
-                {
-                    if(result[i][j] > 0)
+               for(int j = 0; j < columns; j ++)
+               {
+                    if(result[i][j] != 0)
                     {
-                        std::cout << " + " << result[i][j] << " * x_" << j + 1;
-                        whetherOne = true;
+                        if(mainID == -1)
+                        {
+                            std::cout << "x_" << j + 1 << " =";
+                            mainID = j;
+                            adecvate[j] = true;
+                            was = false;
+                            //std::cout << i << " " << j << " " << mainID << std::endl;
+                            continue;
+
+                        }
+                        if(mainID != -1 && j != columns - 1)
+                        {
+
+                            if(result[i][j] / result[i][mainID] > 0)
+                            {
+                                std::cout << " - " << result[i][j] / result[i][mainID] << "x_" << j + 1;
+                                was = true;
+                            }
+
+                            if(result[i][j] / result[i][mainID] < 0)
+                            {
+                                std::cout << " + " << -result[i][j] / result[i][mainID] << "x_" << j + 1;
+                                was = true;
+                            }
+                        }
                     }
-                    if(result[i][j] < 0)
+
+                    if(j == columns - 1 && result[i][j] != 0)
                     {
-                        std::cout << " - " << -result[i][j] << " * x_" << j + 1;
-                        whetherOne = true;
+                        if(result[i][j] / result[i][mainID] > 0)
+                            std::cout << " - " << result[i][j] / result[i][mainID];
+
+                        if(result[i][j] / result[i][mainID] < 0)
+                            std::cout << " + " << -result[i][j] / result[i][mainID];
                     }
-                }
 
-                if(result[i][columns] > 0)
-                {
-                    std::cout << " + " << result[i][columns];
-                    whetherOne = true;
-                }
-                if(result[i][columns] < 0)
-                {
-                    std::cout << " - " << -result[i][columns];
-                    whetherOne = true;
-                }
-                if(result[i][columns] == 0 && !whetherOne)
-                    std::cout << " 0";
+                    if(!was && j == columns - 1 && result[i][j] == 0)
+                        std::cout << " 0";
 
-                std::cout << ";\n";
-
+               }
+               std::cout << std::endl;
             }
+
+            for(int i = 0; i < columns - 1; i ++)
+            {
+                if(!adecvate[i])
+                    std::cout << "x_ " << i + 1 << " can be any real\n";
+            }
+
 
             errors = false;
 
